@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "gsasrec"
+version = "0.1.0"
+description = "gSASRec implemented with PyTorch Lightning"
+authors = ["Ломакин Федор lomakin.fv@phystech.edu"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "gsasrec" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+torch = "^2.0.0"
+pytorch-lightning = "^1.9.0"
+requests = "^2.0"
+numpy = "^1.21"
+datasets = "^2.0.0"
+ir_measures = "^0.3.0"
+tqdm = "^4.0"
+torchinfo = "^1.7.0"
+
+[tool.poetry.group.dev.dependencies]
+dvc = "^2.0"
+dvc-webdav = "^2.0"
+pre-commit = "*"
+black = "*"
+flake8 = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+

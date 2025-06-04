@@ -1,0 +1,27 @@
+dataset_name: ml1m
+sequence_length: 128
+embedding_dim: 128
+train_batch_size: 128
+eval_batch_size: 512
+num_heads: 1
+num_blocks: 2
+dropout_rate: 0.5
+negs_per_pos: 256
+max_epochs: 10000
+max_batches_per_epoch: 50
+
+mlflow_uri: "http://127.0.0.1:8080"
+
+metrics:
+  - nDCG@10
+  - R@1
+  - R@10
+val_metric: nDCG@10
+early_stopping_patience: 200
+filter_rated: true
+recommendation_limit: 10
+
+gbce_t: 0.75
+reuse_item_embeddings: false
+
+checkpoint_path: null

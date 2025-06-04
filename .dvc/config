@@ -1,0 +1,10 @@
+[core]
+    remote = datasets
+['remote "datasets"']
+    url = webdavs://webdav.yandex.ru/mlops_dvc/datasets
+    user = dorner333
+    timeout = 600
+['remote "models"']
+    url = webdavs://webdav.yandex.ru/mlops_dvc/models
+    user = dorner333
+    timeout = 600

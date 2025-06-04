@@ -1,0 +1,11 @@
+dataset:
+  name: ml1m
+  url: "https://raw.githubusercontent.com/asash/ml1m-sas-mapping/main/ml-1m_sas.txt"
+  data_dir: "datasets/ml1m"
+
+split:
+  num_all_users: 6040
+  val_user_count: 512
+  random_seed: 42
+
+sequence_length: 128
