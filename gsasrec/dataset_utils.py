@@ -1,4 +1,6 @@
 import json
+import os
+
 
 import torch
 from torch.utils.data import DataLoader, Dataset
@@ -79,11 +81,12 @@ def get_train_dataloader(
         f"{dataset_dir}/train/input.txt",
         max_length=max_length + 1,
         padding_value=padding_value,
-    )  # +1 for sequence shifting
+    )
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
         shuffle=True,
+        num_workers=os.cpu_count(),
         collate_fn=lambda x: collate_with_random_negatives(
             x, padding_value, train_neg_per_positive
         ),
@@ -101,7 +104,11 @@ def get_val_or_test_dataloader(dataset_name, part="val", batch_size=32, max_leng
         max_length=max_length,
     )
     dataloader = DataLoader(
-        dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_val_test
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        collate_fn=collate_val_test,
+        num_workers=os.cpu_count(),
     )
     return dataloader
 

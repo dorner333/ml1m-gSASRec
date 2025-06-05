@@ -22,9 +22,7 @@ class GSASRec(torch.nn.Module):
 
         self.num_heads = num_heads
 
-        self.item_embedding = torch.nn.Embedding(
-            self.num_items + 2, self.embedding_dim
-        )  # items are enumerated from 1;  +1 for padding
+        self.item_embedding = torch.nn.Embedding(self.num_items + 2, self.embedding_dim)
         self.position_embedding = torch.nn.Embedding(
             self.sequence_length, self.embedding_dim
         )
@@ -50,7 +48,6 @@ class GSASRec(torch.nn.Module):
         else:
             return self.output_embedding
 
-    # returns last hidden state and the attention weights
     def forward(self, input):
         seq = self.item_embedding(input.long())
         mask = (input != self.num_items + 1).float().unsqueeze(-1)

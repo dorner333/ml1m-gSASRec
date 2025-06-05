@@ -15,10 +15,11 @@ torch = "^2.0.0"
 pytorch-lightning = "^1.9.0"
 requests = "^2.0"
 numpy = "^1.21"
-datasets = "^2.0.0"
 ir_measures = "^0.3.0"
 tqdm = "^4.0"
-torchinfo = "^1.7.0"
+fire = "*"
+mlflow = "^2.0"
+pyyaml = "*"
 
 [tool.poetry.group.dev.dependencies]
 dvc = "^2.0"

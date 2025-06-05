@@ -7,7 +7,7 @@ from gsasrec.dataset_utils import (
     get_train_dataloader,
     get_val_dataloader,
 )
-from gsasrec.eval_utils import evaluate
+from gsasrec.eval_utils import evaluate_pt
 from gsasrec.utils import build_model
 
 
@@ -81,21 +81,21 @@ class GSASRecLightning(pl.LightningModule):
         )
         loss = loss_per_element.sum() / mask.sum()
 
-        return loss
+        return {"loss": loss}
 
     def training_epoch_end(self, outputs):
-        device = self.device
-        avg_train_loss = torch.stack(outputs).mean().item()
+        losses = [out["loss"] for out in outputs]
+        avg_train_loss = torch.stack(losses).mean().item()
         self.train_losses.append(avg_train_loss)
         self.log("train_loss", avg_train_loss, on_epoch=True, prog_bar=True)
 
-        result = evaluate(
+        result = evaluate_pt(
             self.model,
             self.val_dataloader_obj,
             self.config.metrics,
             self.config.recommendation_limit,
             self.config.filter_rated,
-            device=device,
+            device=self.device,
         )
         ndcg10 = result[self.config.val_metric]
         r1 = result["R@1"]
@@ -105,9 +105,9 @@ class GSASRecLightning(pl.LightningModule):
         self.val_r1.append(r1)
         self.val_r10.append(r10)
 
-        self.log("val_nDCG@10", ndcg10, on_epoch=True, prog_bar=True)
-        self.log("val_R@1", r1, on_epoch=True, prog_bar=False)
-        self.log("val_R@10", r10, on_epoch=True, prog_bar=False)
+        self.log("val_nDCG10", ndcg10, on_epoch=True, prog_bar=True)
+        self.log("val_R1", r1, on_epoch=True, prog_bar=False)
+        self.log("val_R10", r10, on_epoch=True, prog_bar=False)
 
         if ndcg10 > self.best_metric:
             self.best_metric = ndcg10

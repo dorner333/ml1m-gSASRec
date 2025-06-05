@@ -1,3 +1,5 @@
+from dvc.repo import Repo
+
 import hydra
 import pytorch_lightning as pl
 from omegaconf import DictConfig, OmegaConf
@@ -9,6 +11,11 @@ import matplotlib.pyplot as plt
 from gsasrec.lightning_module import GSASRecLightning
 
 
+def pull_data():
+    repo = Repo(".")
+    repo.pull()
+
+
 @hydra.main(config_path="../configs", config_name="model", version_base=None)
 def main(cfg: DictConfig):
     mlflow_logger = MLFlowLogger(
@@ -18,7 +25,6 @@ def main(cfg: DictConfig):
     commit_hash = (
         subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
     )
-    mlflow_logger.log_param("git_commit", commit_hash)
 
     cfg_dict = OmegaConf.to_container(cfg, resolve=True)
     flat_cfg = {}
@@ -32,6 +38,8 @@ def main(cfg: DictConfig):
                 flat_cfg[new_key] = v
 
     _flatten(cfg_dict)
+    # Добавляем git_commit в гиперпараметры
+    flat_cfg["git_commit"] = commit_hash
     mlflow_logger.log_hyperparams(flat_cfg)
 
     model = GSASRecLightning(cfg)
@@ -41,6 +49,7 @@ def main(cfg: DictConfig):
         accelerator="auto",
         devices=1,
         logger=mlflow_logger,
+        log_every_n_steps=1,
     )
     trainer.fit(model)
 
@@ -74,4 +83,5 @@ def main(cfg: DictConfig):
 
 
 if __name__ == "__main__":
+    pull_data()
     main()

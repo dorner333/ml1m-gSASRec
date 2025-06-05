@@ -1,5 +1,8 @@
 /datasets
 /models
+/outputs
+/mlruns
+/model_artifact
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
