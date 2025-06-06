@@ -1,3 +1,4 @@
 /config.local
 /tmp
+/cache # инача не подгружаются файлы через dvc pull
 /cache

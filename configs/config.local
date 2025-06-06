@@ -1,0 +1,5 @@
+['remote "datasets"']
+    password = <СЮДА НУЖНО ВСТАВИТЬ ПАРОЛЬ>
+
+['remote "models"']
+    password = <СЮДА НУЖНО ВСТАВИТЬ ПАРОЛЬ>
